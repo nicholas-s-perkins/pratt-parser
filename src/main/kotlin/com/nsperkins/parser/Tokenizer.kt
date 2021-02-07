@@ -1,5 +1,6 @@
 package com.nsperkins.parser
 
+import com.nsperkins.parser.token.Multiply
 import com.nsperkins.parser.token.Numeric
 import com.nsperkins.parser.token.Plus
 import com.nsperkins.parser.token.Token
@@ -14,7 +15,10 @@ class Tokenizer {
                         Numeric(it)
                     }
                     it == "+"                 -> {
-                        Plus(it)
+                        Plus()
+                    }
+                    it == "*"                 -> {
+                        Multiply()
                     }
                     else                      -> {
                         throw IllegalArgumentException("token ${it} not supported")
