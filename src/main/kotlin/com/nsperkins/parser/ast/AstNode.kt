@@ -4,11 +4,10 @@ import com.nsperkins.parser.BTreePrinter
 import com.nsperkins.parser.token.Token
 
 class AstNode(
-    val token: Token
+    val token: Token,
+    val left: AstNode? = null,
+    val right: AstNode? = null
 ) {
-    var left: AstNode? = null
-    var right: AstNode? = null
-
     /**
      * Basic tree print function from https://stackoverflow.com/a/8948691
      */

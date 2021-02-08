@@ -1,71 +1,54 @@
 package com.nsperkins.parser
 
 import com.nsperkins.parser.ast.AstNode
-import com.nsperkins.parser.token.Multiply
-import com.nsperkins.parser.token.Numeric
-import com.nsperkins.parser.token.Plus
-import com.nsperkins.parser.token.Token
+import com.nsperkins.parser.token.*
 
 
 class Parser(tokens: List<Token>) {
-    private val tokenIt = tokens.iterator()
+    private val tokenIt = java.util.ArrayDeque(tokens)
 
-    private fun next() = tokenIt.next()
-    private fun hasNext() = tokenIt.hasNext()
+    private fun next() = tokenIt.remove()
+    private fun hasNext() = !tokenIt.isEmpty()
+    private fun peek() = tokenIt.peek()
 
+    fun parse(rbp:Int = 0): AstNode {
+        var left = nud(next())
 
-    fun parse(): AstNode {
-        var left: AstNode = nud(next())
-
-        while (hasNext()) {
+        while (hasNext() && bp(peek()) > rbp){
             left = led(left, next())
         }
 
         return left
     }
 
-    private fun nud(token: Token): AstNode {
-        return when (token) {
-            is Numeric -> {
-                AstNode(token)
-            }
-            is Plus    -> {
-                AstNode(token)
-            }
-            else       -> {
-                throw IllegalArgumentException("token ${token} not supported")
-            }
-        }
+    /**
+     * bindingPower
+     */
+    private fun bp(token: Token): Int {
+        return token.bindingPower
     }
 
+    //TODO: probably need to figure out nud/led for tokens more correctly?
+
+    /**
+     * null-denotation
+     */
+    private fun nud(token: Token): AstNode {
+        return AstNode(token)
+    }
+
+    /**
+     * left-denotation
+     */
     private fun led(left: AstNode, token: Token): AstNode {
-        return when (token) {
-            is Numeric  -> {
-                val node = AstNode(token)
-                left.right = node
-                left
-            }
-            is Plus     -> {
-                val node = AstNode(token)
-                node.left = left
-                node
-            }
-            is Multiply -> {
-                val node = AstNode(token)
-                node.left = left
-                node
-            }
-            else        -> {
-                throw IllegalArgumentException("token ${token} not supported")
-            }
-        }
+        return AstNode(token = token, left = left, right = parse(bp(token)))
     }
 
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
             val tokenizer = Tokenizer()
-            val parser = Parser(tokenizer.tokenize("1+2*3"))
+            val parser = Parser(tokenizer.tokenize("1 * (2 + 3)"))
 
             val ast = parser.parse()
             println(ast)
