@@ -11,10 +11,7 @@ sealed class Token(
     class Plus : Token("+", Precedence.SUM)
     class Minus : Token("-", Precedence.SUM)
     class Multiply : Token("*", Precedence.PRODUCT)
-
-    //left paren
     class OpenParen : Token("(", Precedence.NO_BINDING_POWER)
-    //right paren
     class CloseParen : Token(")", Precedence.NO_BINDING_POWER)
 
     class Equals: Token("=", Precedence.EQUALS)
@@ -51,15 +48,5 @@ sealed class Token(
         var result = value.hashCode()
         result = 31 * result + bindingPower
         return result
-    }
-
-
-
-    companion object {
-//        fun errNud(token: Token): AstNode = throw IllegalStateException("${token} does not have a NUD state")
-//        fun errLed(left: AstNode, token: Token, parser: Parser): AstNode = throw IllegalStateException("${token} does not have a LED state")
-//
-//        fun literal(token: Token) = AstNode(token)
-//        fun binOp(left: AstNode, token: Token, parser: Parser) = AstNode(token = token, left = left, right = parser.parse(token.bindingPower))
     }
 }
