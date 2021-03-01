@@ -13,18 +13,18 @@ class Tokenizer {
     private val tokenInfos: MutableList<TokenInfo> = mutableListOf()
 
     init {
-        add("\\(") { Token.Operator.OpenParen() }
-        add("\\)") { Token.Operator.CloseParen() }
-        add("[+]") { Token.Operator.Plus() }
-        add("[-]") { Token.Operator.Minus() }
-        add("[*]") { Token.Operator.Multiply() }
-        add("[0-9]+") { Token.Value.Integer(it) }
+        add("\\(") { Token.OpenParen() }
+        add("\\)") { Token.CloseParen() }
+        add("[+]") { Token.Plus() }
+        add("[-]") { Token.Minus() }
+//        add("[*]") { Token.Multiply() }
+        add("[0-9]+") { Token.Integer(it) }
+        add("[a-zA-Z_]+") { Token.Name(it) }
     }
 
     fun add(regex: String, builder: (String) -> Token) {
         tokenInfos.add(TokenInfo(Pattern.compile("^($regex)"), builder))
     }
-
 
     fun tokenize(str: String): List<Token> {
         val tokens = mutableListOf<Token>()
@@ -43,6 +43,7 @@ class Tokenizer {
 
                     tokens.add(info.tokenBuilder(tok))
 
+                    //could make faster by indexing matcher position, typical way is to make a token for whitespace
                     s = m.replaceFirst("").trim()
 
                     break

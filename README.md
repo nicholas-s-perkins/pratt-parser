@@ -21,3 +21,6 @@ E.g. The `+` operator might be `10` and the `*` operator might be `20`, indicati
 In the parse, we consider two relationships of this binding power:
 - `rbp` - the "right binding power"  
 - `lbp` - the "left binding power"
+
+### Code
+- A token's `semantic code` - a program assigned to a token that produces its semantic meaning
