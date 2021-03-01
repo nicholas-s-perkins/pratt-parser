@@ -1,7 +1,12 @@
 package com.nsperkins.parser.ast
 
-class NameNode(val name: String) : AstNode {
+import com.nsperkins.parser.token.Token
+
+class NameNode(val name: Token) : AstNode {
     override fun print(builder: StringBuilder) {
         builder.append(name)
     }
+
+    override fun getToken() = name
+    override fun getChildren() = listOf<AstNode>()
 }

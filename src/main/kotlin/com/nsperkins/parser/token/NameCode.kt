@@ -6,6 +6,6 @@ import com.nsperkins.parser.ast.NameNode
 
 class NameCode : NudCode {
     override fun parse(parser: Parser, token: Token): AstNode {
-        return NameNode(token.value);
+        return NameNode(token);
     }
 }

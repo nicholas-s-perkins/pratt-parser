@@ -16,4 +16,6 @@ class OperatorNode(
         builder.append(")")
     }
 
+    override fun getToken() = operator
+    override fun getChildren() = listOf(left, right)
 }

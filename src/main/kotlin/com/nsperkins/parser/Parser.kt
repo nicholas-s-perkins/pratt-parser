@@ -5,7 +5,6 @@ import com.nsperkins.parser.ast.AstNode
 import com.nsperkins.parser.token.*
 import java.util.*
 import kotlin.reflect.KClass
-import kotlin.system.exitProcess
 
 
 class Parser(tokens: List<Token>) {
@@ -90,7 +89,7 @@ class Parser(tokens: List<Token>) {
             val str = StringBuilder();
             ast.print(str)
 
-            println(str.toString())
+            println(ast.printTree())
         }
     }
 

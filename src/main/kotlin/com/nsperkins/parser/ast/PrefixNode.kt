@@ -11,4 +11,7 @@ class PrefixNode(val operator: Token, val right: AstNode) : AstNode {
         right.print(builder)
         builder.append(")")
     }
+
+    override fun getToken() = operator
+    override fun getChildren() = listOf(right)
 }
