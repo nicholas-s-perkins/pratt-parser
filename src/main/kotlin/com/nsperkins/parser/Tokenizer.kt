@@ -18,6 +18,14 @@ class Tokenizer {
         add("[+]") { Token.Plus() }
         add("[-]") { Token.Minus() }
         add("[*]") { Token.Multiply() }
+        add("if") { Token.If() }
+        add("then") { Token.Then() }
+        add("else") { Token.Else() }
+        add("print") { Token.Print() }
+        add("rewind") { Token.Rewind() }
+        add("[=]") { Token.Equals() }
+        add("[!]") { Token.Bang() }
+        add("[↑]") { Token.Exponent() }
         add("[0-9]+") { Token.Integer(it) }
         add("[a-zA-Z_]+") { Token.Name(it) }
     }

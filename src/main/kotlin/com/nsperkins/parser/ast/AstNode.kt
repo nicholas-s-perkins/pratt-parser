@@ -5,13 +5,16 @@ import java.util.*
 
 //base of all AST nodes
 interface AstNode {
-    /**
-     * Pretty-print the expression to a string.
-     */
-    fun print(builder: StringBuilder)
 
     fun getToken(): Token
     fun getChildren(): List<AstNode>
+
+    fun printExpression(builder: StringBuilder)
+    fun printExpression(): String {
+        val builder = StringBuilder();
+        printExpression(builder)
+        return builder.toString()
+    }
 
     fun printTree(): String {
         val builder = StringJoiner("\n")

@@ -13,14 +13,23 @@ sealed class Token(
     class Multiply : Token("*", Precedence.PRODUCT)
 
     //left paren
-    class OpenParen : Token("(", Precedence.CALL)
+    class OpenParen : Token("(", Precedence.NO_BINDING_POWER)
     //right paren
     class CloseParen : Token(")", Precedence.NO_BINDING_POWER)
 
+    class Equals: Token("=", Precedence.EQUALS)
+
+    class If: Token("if", Precedence.CONDITIONAL)
+    class Then: Token("then", Precedence.CONDITIONAL)
+    class Else: Token("else", Precedence.CONDITIONAL)
+    class Print: Token("print", Precedence.EQUALS)
+    class Rewind: Token("rewind", Precedence.EQUALS)
+
+    class Exponent: Token("↑", Precedence.EXPONENT)
+    class Bang: Token("!", Precedence.POSTFIX)
+
     class Integer(value: String) : Token(value, Precedence.NO_BINDING_POWER)
     class Name(value: String) : Token(value, Precedence.NO_BINDING_POWER)
-
-
 
     override fun toString(): String {
         return value

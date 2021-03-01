@@ -5,7 +5,7 @@ import com.nsperkins.parser.ast.AstNode
 
 class GroupCode : NudCode {
     override fun parse(parser: Parser, token: Token): AstNode {
-        val expression: AstNode = parser.parse()
+        val expression: AstNode = parser.parse(token.bindingPower)
         parser.next(Token.CloseParen::class)
         return expression
     }

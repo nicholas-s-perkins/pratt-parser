@@ -15,16 +15,23 @@ class Parser(tokens: List<Token>) {
     init {
         val nuds = mutableMapOf<KClass<out Token>, NudCode>()
         nuds[Token.Name::class] = NameCode()
+        nuds[Token.Integer::class] = NameCode()
         nuds[Token.Plus::class] = PrefixOperatorCode()
         nuds[Token.Minus::class] = PrefixOperatorCode()
+        nuds[Token.Print::class] = PrefixOperatorCode()
+        nuds[Token.Rewind::class] = NameCode()
         nuds[Token.OpenParen::class] = GroupCode()
         nuds[Token.CloseParen::class] = ErrNud()
+        nuds[Token.If::class] = IfElseCode()
         tokenToNud = nuds.toMap()
 
         val leds = mutableMapOf<KClass<out Token>, LedCode>()
         leds[Token.Plus::class] = BinaryOperatorCode()
         leds[Token.Minus::class] = BinaryOperatorCode()
         leds[Token.Multiply::class] = BinaryOperatorCode()
+        leds[Token.Equals::class] = BinaryOperatorCode()
+        leds[Token.Exponent::class] = BinaryOperatorCode()
+        leds[Token.Bang::class] = PostFixOperatorCode()
         leds[Token.CloseParen::class] = ErrLed()
         tokenToLed = leds.toMap()
     }
@@ -61,18 +68,18 @@ class Parser(tokens: List<Token>) {
 
     //"prefix" code
     private fun nudCode(token: Token): NudCode {
-        return tokenToNud[token::class] ?: throw IllegalStateException("cannot parse $token")
+        return tokenToNud[token::class] ?: throw IllegalStateException("no nud parse for token $token")
     }
 
     // infix code
     private fun ledCode(token: Token): LedCode {
-        return tokenToLed[token::class]?: throw IllegalStateException("no led found for $token")
+        return tokenToLed[token::class]?: throw IllegalStateException("no led found for token $token")
     }
 
     fun next(kClass: KClass<out Token>): Token {
         val token = next()
         if (token::class != kClass) {
-            throw IllegalStateException("expected token $kClass")
+            throw IllegalStateException("expected token of type '${kClass.simpleName}' instead got token '${token}'")
         }
         return token
     }
@@ -81,14 +88,14 @@ class Parser(tokens: List<Token>) {
         @JvmStatic
         fun main(args: Array<String>) {
             val tokenizer = Tokenizer()
-            val tokens = tokenizer.tokenize("(a - b) * c")
+            val tokens = tokenizer.tokenize("if 3*a + b!↑-3 = 0 then print a + (b-1) else rewind")
+//            val tokens = tokenizer.tokenize("a - b * c")
+//            val tokens = tokenizer.tokenize("if a+b then (b-1) else c")
             val parser = Parser(tokens)
 
             val ast = parser.parse()
 
-            val str = StringBuilder();
-            ast.print(str)
-
+            println(ast.printExpression())
             println(ast.printTree())
         }
     }
