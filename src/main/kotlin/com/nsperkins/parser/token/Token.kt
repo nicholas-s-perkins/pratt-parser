@@ -14,7 +14,7 @@ sealed class Token(
 ) {
     class Plus : Token("+", 10,)
     class Minus : Token("-", 10)
-//    class Multiply : Token("*", 20, ::errNud, ::binOp)
+    class Multiply : Token("*", 20)
 
     //left paren
     class OpenParen : Token("(", 10)

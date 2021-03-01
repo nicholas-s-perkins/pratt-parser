@@ -1,21 +1,19 @@
 package com.nsperkins.parser.ast
 
-import com.nsperkins.parser.ast.Expression
-
 //A ternary conditional expression like "a ? b : c
 class ConditionalExpression(
-    private val mCondition: Expression? = null,
-    private val mThenArm: Expression? = null,
-    private val mElseArm: Expression? = null
+    private val condition: Expression? = null,
+    private val thenArm: Expression? = null,
+    private val elseArm: Expression? = null
 ) : Expression {
 
     override fun print(builder: StringBuilder) {
         builder.append("(")
-        mCondition?.print(builder)
+        condition?.print(builder)
         builder.append(" ? ")
-        mThenArm?.print(builder)
+        thenArm?.print(builder)
         builder.append(" : ")
-        mElseArm?.print(builder)
+        elseArm?.print(builder)
         builder.append(")")
     }
 

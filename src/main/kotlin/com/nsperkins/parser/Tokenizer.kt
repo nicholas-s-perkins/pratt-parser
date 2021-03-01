@@ -17,7 +17,7 @@ class Tokenizer {
         add("\\)") { Token.CloseParen() }
         add("[+]") { Token.Plus() }
         add("[-]") { Token.Minus() }
-//        add("[*]") { Token.Multiply() }
+        add("[*]") { Token.Multiply() }
         add("[0-9]+") { Token.Integer(it) }
         add("[a-zA-Z_]+") { Token.Name(it) }
     }
