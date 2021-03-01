@@ -1,7 +1,7 @@
 package com.nsperkins.parser
 
 
-import com.nsperkins.parser.ast.Expression
+import com.nsperkins.parser.ast.AstNode
 import com.nsperkins.parser.token.*
 import java.util.*
 import kotlin.reflect.KClass
@@ -10,20 +10,20 @@ import kotlin.system.exitProcess
 
 class Parser(tokens: List<Token>) {
     private val tokenStream: Deque<Token> = ArrayDeque(tokens)
-    private val tokenToNud: Map<KClass<out Token>, PrefixParselet>
-    private val tokenToLed: Map<KClass<out Token>, InfixParslet>
+    private val tokenToNud: Map<KClass<out Token>, NudCode>
+    private val tokenToLed: Map<KClass<out Token>, LedCode>
 
     init {
-        val nuds = mutableMapOf<KClass<out Token>, PrefixParselet>()
-        nuds[Token.Name::class] = NameParselet()
-        nuds[Token.Plus::class] = PrefixOperatorParselet()
-        nuds[Token.Minus::class] = PrefixOperatorParselet()
+        val nuds = mutableMapOf<KClass<out Token>, NudCode>()
+        nuds[Token.Name::class] = NameCode()
+        nuds[Token.Plus::class] = PrefixOperatorCode()
+        nuds[Token.Minus::class] = PrefixOperatorCode()
         tokenToNud = nuds.toMap()
 
-        val leds = mutableMapOf<KClass<out Token>, InfixParslet>()
-        leds[Token.Plus::class] = BinaryOperatorParselet(Precidence.SUM)
-        leds[Token.Minus::class] = BinaryOperatorParselet(Precidence.SUM)
-        leds[Token.Multiply::class] = BinaryOperatorParselet(Precidence.PRODUCT)
+        val leds = mutableMapOf<KClass<out Token>, LedCode>()
+        leds[Token.Plus::class] = BinaryOperatorCode(Precidence.SUM)
+        leds[Token.Minus::class] = BinaryOperatorCode(Precidence.SUM)
+        leds[Token.Multiply::class] = BinaryOperatorCode(Precidence.PRODUCT)
         tokenToLed = leds.toMap()
     }
 
@@ -31,34 +31,39 @@ class Parser(tokens: List<Token>) {
     fun peek() = tokenStream.peek()
     fun hasNext() = tokenStream.isNotEmpty()
 
-    fun parse(rightBindingPower: Int = 0): Expression {
+    fun parse(rightBindingPower: Int = 0): AstNode {
+        //Q_0
+        //c ← nud;
+        //left ← run c
         var token: Token = next()
-        val code: PrefixParselet = nudCode(token)
+        val cNud: NudCode = nudCode(token)
+        var left: AstNode = cNud.parse(this, token)
 
-        var left: Expression = code.parse(this, token)
-
-        while (hasNext() && rightBindingPower < leftBindingPower()) {
+        //Q_1
+        //rbp < lpb/
+        //advance;
+        //c ← led;
+        //left ← run c
+        while (hasNext() && rightBindingPower < leftBindingPower(peek())) {
             token = next()
-            val code2 = ledCode(token)!! //todo what if it has no led?
-            left = code2.parse(this, left, token)
+            val cLed = ledCode(token)!! //todo what if it has no led?
+            left = cLed.parse(this, left, token)
         }
 
        return left;
     }
 
-    private fun leftBindingPower(): Int {
-        val parslet = tokenToLed[peek()::class]
-
+    private fun leftBindingPower(token: Token): Int {
+        val parslet = tokenToLed[token::class]
         return if (parslet != null) parslet.precedence else 0
     }
 
-
-    //"prefix" parslets
-    private fun nudCode(token: Token): PrefixParselet {
+    //"prefix" parselets
+    private fun nudCode(token: Token): NudCode {
         return tokenToNud[token::class] ?: throw IllegalStateException("cannot parse $token")
     }
 
-    private fun ledCode(token: Token): InfixParslet? {
+    private fun ledCode(token: Token): LedCode? {
         return tokenToLed[token::class]
     }
 

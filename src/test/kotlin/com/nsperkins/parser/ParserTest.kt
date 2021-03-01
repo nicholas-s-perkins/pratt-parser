@@ -1,9 +1,7 @@
 package com.nsperkins.parser
 
-import com.nsperkins.parser.ast.AstNode
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Test
 
 internal class ParserTest {
 

@@ -1,11 +1,11 @@
 package com.nsperkins.parser.ast
 
 //A ternary conditional expression like "a ? b : c
-class ConditionalExpression(
-    private val condition: Expression? = null,
-    private val thenArm: Expression? = null,
-    private val elseArm: Expression? = null
-) : Expression {
+class ConditionalNode(
+    private val condition: AstNode? = null,
+    private val thenArm: AstNode? = null,
+    private val elseArm: AstNode? = null
+) : AstNode {
 
     override fun print(builder: StringBuilder) {
         builder.append("(")

@@ -1,7 +1,6 @@
 package com.nsperkins.parser
 
 
-import com.nsperkins.parser.ast.AstNode
 import java.util.*
 
 /**

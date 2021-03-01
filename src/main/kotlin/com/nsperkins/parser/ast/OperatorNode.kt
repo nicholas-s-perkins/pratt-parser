@@ -2,11 +2,12 @@ package com.nsperkins.parser.ast
 
 import com.nsperkins.parser.token.Token
 
-class OperatorExpression(
-    val left: Expression,
+
+class OperatorNode(
+    val left: AstNode,
     val operator: Token,
-    val right: Expression
-) : Expression {
+    val right: AstNode
+) : AstNode {
     override fun print(builder: StringBuilder) {
         builder.append("(")
         left.print(builder)

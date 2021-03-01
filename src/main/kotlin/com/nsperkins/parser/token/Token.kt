@@ -1,9 +1,5 @@
 package com.nsperkins.parser.token
 
-import com.nsperkins.parser.Parser
-import com.nsperkins.parser.ast.AstNode
-import java.lang.IllegalStateException
-
 //sometimes interesting to have parse location, so you can point out where an error is
 // then your ast can contain the token location
 
