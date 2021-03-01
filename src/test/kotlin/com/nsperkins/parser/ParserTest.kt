@@ -38,10 +38,10 @@ internal class ParserTest {
 //        )
 //    }
 
-    private fun compareTree(result: AstNode, expected: String) {
-        assertEquals(
-            expected.replace(Regex("\\s+$"), ""),
-            result.toString().replace(Regex("\\s+$"), "")
-        )
-    }
+//    private fun compareTree(result: AstNode, expected: String) {
+//        assertEquals(
+//            expected.replace(Regex("\\s+$"), ""),
+//            result.toString().replace(Regex("\\s+$"), "")
+//        )
+//    }
 }

@@ -8,17 +8,17 @@ sealed class Token(
     val value: String,
     val bindingPower: Int
 ) {
-    class Plus : Token("+", 10,)
-    class Minus : Token("-", 10)
-    class Multiply : Token("*", 20)
+    class Plus : Token("+", Precedence.SUM)
+    class Minus : Token("-", Precedence.SUM)
+    class Multiply : Token("*", Precedence.PRODUCT)
 
     //left paren
-    class OpenParen : Token("(", 10)
+    class OpenParen : Token("(", Precedence.CALL)
     //right paren
-    class CloseParen : Token(")", 100)
+    class CloseParen : Token(")", Precedence.NO_BINDING_POWER)
 
-    class Integer(value: String) : Token(value, NO_BINDING_POWER)
-    class Name(value: String) : Token(value, NO_BINDING_POWER)
+    class Integer(value: String) : Token(value, Precedence.NO_BINDING_POWER)
+    class Name(value: String) : Token(value, Precedence.NO_BINDING_POWER)
 
 
 
@@ -47,8 +47,6 @@ sealed class Token(
 
 
     companion object {
-        const val NO_BINDING_POWER = -1;
-
 //        fun errNud(token: Token): AstNode = throw IllegalStateException("${token} does not have a NUD state")
 //        fun errLed(left: AstNode, token: Token, parser: Parser): AstNode = throw IllegalStateException("${token} does not have a LED state")
 //

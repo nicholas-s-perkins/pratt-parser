@@ -1,6 +1,7 @@
 package com.nsperkins.parser.token
 
-object Precidence {
+object Precedence {
+    const val NO_BINDING_POWER = -1;
     const val ASSIGNMENT = 1
     const val CONDITIONAL = 2
     const val SUM = 3
